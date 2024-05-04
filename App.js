@@ -30,9 +30,21 @@ export default function App() {
       </View>
       {/* list of goals */}
       <View style={styles.goalsContainer}>
-        {courseGoals.map((oneGoal, key) => {
-          return <Text key={oneGoal + key}>{oneGoal}</Text>
-        })}
+        {/* 
+        the following will not recognise borderRadius on IOS beouse in IOS
+        the Text element doesent support borderRadius
+        the fix is to wrap the text in a view and give view borderRadius
+        however the text will not enharit propoertis from parrnt such as collor, 
+        {courseGoals.map((oneGoal, key) => (
+          <Text style={styles.goalItem} key={oneGoal + key}>{oneGoal}</Text>
+        ))}
+        */}
+        {/* solution: */}
+        {courseGoals.map((oneGoal, key) => (
+          <View style={styles.goalItem} key={oneGoal + key}>
+            <Text style={styles.goalText}>{oneGoal}</Text>
+          </View>
+        ))}
       </View>
     </View>
   );
@@ -62,5 +74,15 @@ const styles = StyleSheet.create({
   },
   goalsContainer: {
     flex: 4
+  },
+  goalItem: {
+    margin: 8,
+    padding: 8,
+    borderRadius: 6,
+    backgroundColor: '#5e0acc',
+    color: 'white'
+  },
+  goalText: {
+    color: 'white'
   }
 });
