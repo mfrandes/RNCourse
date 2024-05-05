@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, TextInput, View, ScrollView } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View, ScrollView, FlatList } from 'react-native';
 import { useState } from 'react';
 
 export default function App() {
@@ -11,7 +11,13 @@ export default function App() {
   }
 
   function addGoalHandler() {
-    setCourseGoals(curentCourseGoals => [...curentCourseGoals, enteredGoalText])
+    setCourseGoals(currentCourseGoals => [
+      ...currentCourseGoals,
+      {
+        text: enteredGoalText,
+        id: Math.random().toString()
+      }
+    ])
   }
 
   return (
@@ -30,13 +36,13 @@ export default function App() {
       </View>
       {/* list of goals */}
       <View style={styles.goalsContainer}>
-        {/* USED TO SCROLL can be configured differentlly for ios and android 
+        {/*ScrollView is USED TO SCROLL can be configured differentlly for ios and android 
         still needs to be in a view becouse its only for scroll
         this not good for long lists, it will load all elements and can create performance issues
         better solution is flat list
         */}
-        <ScrollView >
-          {/* 
+        {/* <ScrollView >
+        
         the following will not recognise borderRadius on IOS beouse in IOS
         the Text element doesent support borderRadius
         the fix is to wrap the text in a view and give view borderRadius
@@ -44,14 +50,33 @@ export default function App() {
         {courseGoals.map((oneGoal, key) => (
           <Text style={styles.goalItem} key={oneGoal + key}>{oneGoal}</Text>
         ))}
-        */}
-          {/* solution: */}
+        
+          {/* solution:
           {courseGoals.map((oneGoal, key) => (
             <View style={styles.goalItem} key={oneGoal + key}>
               <Text style={styles.goalText}>{oneGoal}</Text>
             </View>
           ))}
-        </ScrollView>
+        </ScrollView> */}
+
+        {/* Using FlatList 
+          data - takes the array that needs to be displayed
+          renderItem - takes a function that will tell how to display items in data
+        */}
+        <FlatList
+          data={courseGoals}
+          renderItem={itemData => {
+            return (
+              <View style={styles.goalItem}>
+                <Text style={styles.goalText}>{itemData.item.text}</Text>
+              </View>
+            )
+          }}
+          keyExtractor={(item, index)=> {
+            return item.id
+          }}
+        />
+
       </View>
     </View>
   );
