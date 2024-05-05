@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, StyleSheet, Text, TextInput, View, ScrollView } from 'react-native';
 import { useState } from 'react';
 
 export default function App() {
@@ -30,7 +30,13 @@ export default function App() {
       </View>
       {/* list of goals */}
       <View style={styles.goalsContainer}>
-        {/* 
+        {/* USED TO SCROLL can be configured differentlly for ios and android 
+        still needs to be in a view becouse its only for scroll
+        this not good for long lists, it will load all elements and can create performance issues
+        better solution is flat list
+        */}
+        <ScrollView >
+          {/* 
         the following will not recognise borderRadius on IOS beouse in IOS
         the Text element doesent support borderRadius
         the fix is to wrap the text in a view and give view borderRadius
@@ -39,12 +45,13 @@ export default function App() {
           <Text style={styles.goalItem} key={oneGoal + key}>{oneGoal}</Text>
         ))}
         */}
-        {/* solution: */}
-        {courseGoals.map((oneGoal, key) => (
-          <View style={styles.goalItem} key={oneGoal + key}>
-            <Text style={styles.goalText}>{oneGoal}</Text>
-          </View>
-        ))}
+          {/* solution: */}
+          {courseGoals.map((oneGoal, key) => (
+            <View style={styles.goalItem} key={oneGoal + key}>
+              <Text style={styles.goalText}>{oneGoal}</Text>
+            </View>
+          ))}
+        </ScrollView>
       </View>
     </View>
   );
