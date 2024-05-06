@@ -17,6 +17,12 @@ export default function App() {
     ])
   }
 
+  const deleteGoal = (goalId) => {
+    setCourseGoals(currentCourseGoals => {
+      return currentCourseGoals.filter(oneGoal => oneGoal.id !== goalId)
+    })
+  }
+
   return (
     <View style={styles.appContainer}>
       {/* input area */}
@@ -53,7 +59,12 @@ export default function App() {
         <FlatList
           data={courseGoals}
           renderItem={itemData => {
-            return <GoalItem itemData={itemData} />
+            return (
+              <GoalItem
+                onDeleteHandle={deleteGoal}
+                text={itemData.item.text}
+                id={itemData.item.id}
+              />)
           }}
           keyExtractor={(item, index) => {
             return item.id
